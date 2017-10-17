@@ -1,6 +1,6 @@
 <?php
 
-$AppName = "Product App";
+$AppName = "Product CI App";
 
 ob_start();
 
