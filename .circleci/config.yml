@@ -16,15 +16,15 @@ jobs:
       - run:
           name: Zip Code
           command: |
-            zip -r codedeploy-demo-app.zip .
+            zip -r codedeploy-dev.zip .
       - run:
           name: Upload Code to S3
           command: |
-            aws s3 cp codedeploy-demo-app.zip s3://codedeploy-demo/codedeploy-demo-app.zip
+            aws s3 cp codedeploy-dev.zip s3://codedeploy-demo/codedeploy-dev.zip
       - deploy:
           name: Deploy to Development Server
           command: |
-            aws deploy create-deployment --application-name app_codedeploy --deployment-group-name app_codedeploy_group --deployment-config-name CodeDeployDefault.AllAtOnce --s3-location bucket=codedeploy-demo,bundleType=zip,key=codedeploy-demo-app.zip --region ap-northeast-1
+            aws deploy create-deployment --application-name app_codedeploy --deployment-group-name app_codedeploy_group --deployment-config-name CodeDeployDefault.AllAtOnce --s3-location bucket=codedeploy-demo,bundleType=zip,key=codedeploy-dev.zip --region ap-northeast-1
   build-prd:
     docker:
       - image: php:7.0-apache
@@ -41,15 +41,15 @@ jobs:
       - run:
           name: Zip Code
           command: |
-            zip -r codedeploy-demo-app.zip .
+            zip -r codedeploy-master.zip .
       - run:
           name: Upload Code to S3
           command: | 
-            aws s3 cp codedeploy-demo-app.zip s3://codedeploy-demo/codedeploy-demo-app.zip
+            aws s3 cp codedeploy-master.zip s3://codedeploy-cuongnx/codedeploy-master.zip
       - deploy:
           name: Deploy to Production Server
           command: |
-            aws deploy create-deployment --application-name app_codedeploy --deployment-group-name app_codedeploy_group --deployment-config-name CodeDeployDefault.AllAtOnce --s3-location bucket=codedeploy-demo,bundleType=zip,key=codedeploy-demo-app.zip --region ap-northeast-1
+            aws deploy create-deployment --application-name app_codedeploy --deployment-group-name app_codedeploy_group --deployment-config-name CodeDeployDefault.AllAtOnce --s3-location bucket=codedeploy-cuongnx,bundleType=zip,key=codedeploy-master.zip --region ap-northeast-1
 workflows:
   version: 2
   build-test-and-approval-deploy:
