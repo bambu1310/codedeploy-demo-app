@@ -20,7 +20,7 @@ jobs:
       - run:
           name: Upload Code to S3
           command: |
-            aws s3 cp codedeploy-dev.zip s3://codedeploy-demo/codedeploy-dev.zip
+            aws s3 cp codedeploy-dev.zip s3://codedeploy-cuongnx/codedeploy-dev.zip
       - deploy:
           name: Deploy to Development Server
           command: |
