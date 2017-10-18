@@ -44,7 +44,7 @@ jobs:
             zip -r codedeploy-master.zip .
       - run:
           name: Upload Code to S3
-          command: | 
+          command: |
             aws s3 cp codedeploy-master.zip s3://codedeploy-cuongnx/codedeploy-master.zip
       - deploy:
           name: Deploy to Production Server
