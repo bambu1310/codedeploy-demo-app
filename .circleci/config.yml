@@ -58,13 +58,7 @@ workflows:
           filters:
             branches:
               only: develop
-      - hold:
-          type: approval
-          requires:
-            - build-devs
       - build-prd:
-          requires:
-            - hold
           filters:
             branches:
               only: master
