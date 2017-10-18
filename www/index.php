@@ -1,6 +1,6 @@
 <?php
 
-$AppName = "Product";
+$AppName = "Successfull";
 
 ob_start();
 
