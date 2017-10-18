@@ -1,5 +1,30 @@
 version: 2
 jobs:
+  build-devs:
+    docker:
+      - image: php:7.0-apache
+    working_directory: /home/saintmedia/
+    steps:
+      - checkout
+      - run:
+          name: Install System Packages
+          command: |
+            apt-get update && apt-get -y install zip
+            apt-get --quiet install --yes python-pip
+            pip install -U pip
+            pip install awscli
+      - run:
+          name: Zip Code
+          command: |
+            zip -r codedeploy-dev.zip .
+      - run:
+          name: Upload Code to S3
+          command: |
+            aws s3 cp codedeploy-dev.zip s3://codedeploy-cuongnx/codedeploy-dev.zip
+      - deploy:
+          name: Deploy to Development Server
+          command: |
+            aws deploy create-deployment --application-name app_codedeploy --deployment-group-name app_codedeploy_group_dev --deployment-config-name CodeDeployDefault.AllAtOnce --s3-location bucket=codedeploy-cuongnx,bundleType=zip,key=codedeploy-dev.zip --region ap-southeast-1
   build-prd:
     docker:
       - image: php:7.0-apache
@@ -29,6 +54,14 @@ workflows:
   version: 2
   build-test-and-approval-deploy:
     jobs:
+      - build-devs:
+          filters:
+            branches:
+              only: develop
+      - hold:
+          type: approval
+          requires:
+            - build-devs
       - build-prd:
           filters:
             branches:
